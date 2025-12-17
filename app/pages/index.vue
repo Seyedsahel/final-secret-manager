@@ -2,7 +2,7 @@
     import { useAuthStore } from '@/stores/auth';
     const auth = useAuthStore();
     definePageMeta({
-        middleware: 'auth'
+        middleware: ['auth','un-auth']
     })
   console.log("ligin?",auth.isAuthenticated)
   </script>

@@ -61,16 +61,7 @@ export const useAuthStore = defineStore('auth', {
         this.loading = false
       }
     },
-     async initAuth() {
-      try {
-        const res = await $fetch('/api/auth/me')
-        if (res) {
-          this.isAuthenticated = true
-        }
-      } catch {
-        this.isAuthenticated = false
-      }
-    },
+   
     
   } 
   
