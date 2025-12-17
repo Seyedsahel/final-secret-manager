@@ -8,9 +8,7 @@
   const auth = useAuthStore();
 
 
-//   definePageMeta({
-//     middleware: 'auth'
-//   })
+  
 
   const username = ref('');
   const password = ref('');
