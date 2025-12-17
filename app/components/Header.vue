@@ -1,7 +1,16 @@
 <script setup lang="ts">
     import logo from '@/assets/img/logo.png';
+    import { useToast } from 'vue-toastification';
+
+    const toast = useToast();
 
     const logout = () =>{
+        $fetch('/api/auth/logout', {
+            method: 'POST'
+        }).then(() => {
+            toast.warning('Logged out successfully');
+            navigateTo('/login');
+        });
 
     }
 </script>
