@@ -1,9 +1,10 @@
 import { RegisterResponse } from '~/types/api';
 export default defineEventHandler(async(event) => {
+    const { public: { apiBase } } = useRuntimeConfig()
     const body = await readBody(event);
     try {
         const data = await $fetch<RegisterResponse>(
-            'https://secret-management-backend.nshub.net/auth/register',
+            `${apiBase}/auth/register`,
             {
                 method: 'POST',
                 body: body

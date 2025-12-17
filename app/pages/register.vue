@@ -1,6 +1,9 @@
 <script setup lang="ts">
     
   import { ref } from 'vue';
+  import { useToast } from 'vue-toastification';
+
+  const toast = useToast();
 
 //   definePageMeta({
 //     middleware: 'auth'
@@ -13,6 +16,7 @@
   const showConfirmPassword = ref(false);
   const errors = ref<{ [key: string]: string }>({});
   const serverErrorMessage = ref('');
+  const loading = ref(false);
 
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
@@ -43,6 +47,7 @@
   async function register(){
     serverErrorMessage.value = "";
     try {
+            loading.value = true;
             await $fetch('/api/auth/register', {
               method: 'POST',
               body: {
@@ -50,7 +55,7 @@
                 "password": password.value
               }
             });
-            console.log("sucess");
+            toast.success('Registration successful! Please log in.');
             
             return navigateTo('/login')
           } catch (error: any) {
@@ -60,7 +65,9 @@
             } else{
               console.error('Unknown Error', error);
             }
-          }
+          } finally{
+            loading.value = false;
+          } 
     }
    const handleSubmit = () => {
     if (validateForm()) {
@@ -173,11 +180,13 @@
         </div>
 
         <!-- Submit Button -->
-        <button
+       <button
           type="submit"
-          class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-lg transition-colors"
-        >
-          Create Account
+          class="flex items-center justify-center w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-lg transition-colors"
+          :disabled="loading"
+          >
+            <LoadingSpinner v-if="loading" class="mr-2"/>
+              Create Account
         </button>
       </form>
 

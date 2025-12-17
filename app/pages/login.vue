@@ -1,6 +1,10 @@
 <script setup lang="ts">
     
   import { ref } from 'vue';
+  import { useToast } from 'vue-toastification';
+
+  const toast = useToast();
+
 
 //   definePageMeta({
 //     middleware: 'auth'
@@ -11,6 +15,8 @@
   const showPassword = ref(false);
   const errors = ref<{ [key: string]: string }>({});
   const serverErrorMessage = ref('');
+  const loading = ref(false);
+
 
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
@@ -37,6 +43,7 @@
     console.log(username.value,password.value);
     
     try {
+            loading.value = true;
             await $fetch('/api/auth/login', {
               method: 'POST',
               body: {
@@ -44,6 +51,7 @@
                 "password": password.value
               }
             });
+            toast.success('Login successful!');
             return navigateTo('/')
           } catch (error: any) {
             const message = error?.data?.message; 
@@ -52,6 +60,8 @@
             } else{
               console.error('Unknown Error', error);
             }
+          } finally{
+            loading.value = false;
           }
     }
    const handleSubmit = () => {
@@ -131,9 +141,11 @@
         <!-- Submit Button -->
         <button
           type="submit"
-          class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-lg transition-colors"
+          class="flex items-center justify-center w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-lg transition-colors"
+            :disabled="loading"
         >
-          Login
+            <LoadingSpinner v-if="loading" class="mr-2"/>
+              Login
         </button>
       </form>
 

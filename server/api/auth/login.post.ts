@@ -1,15 +1,16 @@
 import { LoginResponse} from '~/types/api';
 export default defineEventHandler(async(event) => {
+    const { public: { apiBase } } = useRuntimeConfig()
     const body = await readBody(event);
     try {
         const data = await $fetch<LoginResponse>(
-            'https://secret-management-backend.nshub.net/auth/login',
+            `${apiBase}/auth/login`,
             {
                 method: 'POST',
                 body: body
             }
         );
-        setCookie(event, 'auth_token', data.data, {
+        setCookie(event, 'token', data.data, {
             httpOnly: true,
             secure: true,
             maxAge: 60 * 60 * 24 * 7, // a week

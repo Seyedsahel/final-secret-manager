@@ -1,5 +1,9 @@
-<script setup>
+<script setup lang="ts">
     import logo from '@/assets/img/logo.png';
+
+    const logout = () =>{
+
+    }
 </script>
 
 <template>
@@ -14,7 +18,7 @@
                 <NuxtLink to="/login" class="bg-green-500 text-white px-4 py-2 rounded cursor-pointer">
                     Login
                 </NuxtLink>
-                <NuxtLink to="/" class="bg-green-500 text-white px-4 py-2 rounded cursor-pointer">
+                <NuxtLink to="/login" @click="logout" class="bg-green-500 text-white px-4 py-2 rounded cursor-pointer">
                     Logout
                 </NuxtLink>
             </div>
