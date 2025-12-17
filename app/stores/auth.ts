@@ -1,24 +1,33 @@
 import { defineStore } from 'pinia'
 
-type User = {
-    id: string;
-    username?: string;
-    }
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    user: null as User | null,
+    isAuthenticated: false,
+    loading: false,
+    error: null as string | null
   }),
-  getters: {
-    isAuthenticated: (state) => !!state.user,
-    username: (state) => state.user?.username ?? null,
-  },
-  actions: {
-    setUser(u: User | null) {
-      this.user = u
-    },
-    clearUser() {
-      this.user = null
-    },
-  },
+
+  actions:{
+    async login(username: string, password:string){
+      this.error = null
+      this.loading = true
+
+      try {
+        await $fetch('/api/auth/login', {
+          method: 'POST',
+          body: { username, password }
+        })
+        this.isAuthenticated = true
+        return true
+        
+      } catch (error: any) {
+        this.error = error?.data?.message || 'Login failed'
+        return false
+      } finally{
+        this.loading = false
+      }
+    }
+  }
+  
 })

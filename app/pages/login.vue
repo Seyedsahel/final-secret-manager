@@ -2,8 +2,10 @@
     
   import { ref } from 'vue';
   import { useToast } from 'vue-toastification';
+  import { useAuthStore } from '@/stores/auth';
 
   const toast = useToast();
+  const auth = useAuthStore();
 
 
 //   definePageMeta({
@@ -39,31 +41,18 @@
 
 
   async function login(){
+    loading.value = true;
     serverErrorMessage.value = "";
-    console.log(username.value,password.value);
-    
-    try {
-            loading.value = true;
-            await $fetch('/api/auth/login', {
-              method: 'POST',
-              body: {
-                "username": username.value,
-                "password": password.value
-              }
-            });
-            toast.success('Login successful!');
-            return navigateTo('/')
-          } catch (error: any) {
-            const message = error?.data?.message; 
-            if (message) {
-              serverErrorMessage.value = message;
-            } else{
-              console.error('Unknown Error', error);
-            }
-          } finally{
-            loading.value = false;
-          }
+    const success = await auth.login(username.value, password.value);
+    if (success) {
+        toast.success('Login successful!');
+        navigateTo('/');
+    } else{
+        serverErrorMessage.value = auth.error || '';
+        loading.value = false;
     }
+  }
+    
    const handleSubmit = () => {
     if (validateForm()) {
       login();
