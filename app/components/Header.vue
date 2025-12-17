@@ -1,18 +1,19 @@
 <script setup lang="ts">
     import logo from '@/assets/img/logo.png';
     import { useToast } from 'vue-toastification';
+    import { useAuthStore } from '@/stores/auth';
 
     const toast = useToast();
+    const auth = useAuthStore();
 
-    const logout = () =>{
-        $fetch('/api/auth/logout', {
-            method: 'POST'
-        }).then(() => {
+    async function logout(){
+        const logoutResult = await auth.logout();
+        if (logoutResult) {
             toast.warning('Logged out successfully');
-            navigateTo('/login');
-        });
-
+        }
     }
+
+
 </script>
 
 <template>
@@ -27,7 +28,7 @@
                 <NuxtLink to="/login" class="bg-green-500 text-white px-4 py-2 rounded cursor-pointer">
                     Login
                 </NuxtLink>
-                <NuxtLink to="/login" @click="logout" class="bg-green-500 text-white px-4 py-2 rounded cursor-pointer">
+                <NuxtLink to="/login" @click="logout()" class="bg-green-500 text-white px-4 py-2 rounded cursor-pointer">
                     Logout
                 </NuxtLink>
             </div>

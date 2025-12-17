@@ -45,6 +45,21 @@ export const useAuthStore = defineStore('auth', {
       this.loading = false
     }
 
+    },
+
+    async logout(){
+      this.loading = true
+
+      try {
+        await $fetch('/api/auth/logout', {
+          method: 'POST'
+        })
+        this.isAuthenticated = false
+        return true;
+        
+      } finally{
+        this.loading = false
+      }
     }
     
   } 
