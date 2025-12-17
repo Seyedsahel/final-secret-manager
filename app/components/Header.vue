@@ -10,6 +10,7 @@
         const logoutResult = await auth.logout();
         if (logoutResult) {
             toast.warning('Logged out successfully');
+            navigateTo('/login');
         }
     }
 
@@ -24,13 +25,15 @@
                 <NuxtLink to="/" class="text-white text-lg font-semibold">Secret Management</NuxtLink>
             </div>
             <div>
-
-                <NuxtLink to="/login" class="bg-green-500 text-white px-4 py-2 rounded cursor-pointer">
-                    Login
+                <div v-if="!auth.isAuthenticated" class="bg-green-500 text-white px-4 py-2 rounded cursor-pointer">
+                    <NuxtLink to="/login" class="font-bold" >
+                   <i class="pi pi-sign-in text-white mr-2.5 "></i> Login
                 </NuxtLink>
-                <NuxtLink to="/login" @click="logout()" class="bg-green-500 text-white px-4 py-2 rounded cursor-pointer">
-                    Logout
-                </NuxtLink>
+                </div>
+                 <div v-if="auth.isAuthenticated"  @click="logout()" class="bg-green-500 text-white px-4 py-2 rounded cursor-pointer font-bold">
+                   <i class="pi pi-sign-out text-white mr-2.5 "></i> Logout
+                </div>
+               
             </div>
         </div>
         <div class="w-full h-px bg-gray-600 m-1"></div>

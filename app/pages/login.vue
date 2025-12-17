@@ -71,7 +71,7 @@
         <h1 class="text-indigo-400 mb-2 text-2xl">Login to Your Account</h1>
       </div>
       <div v-if="serverErrorMessage" class="text-red-500 text-lg text-center border border-red-500 rounded p-2.5 m-5">
-        <p>{{ serverErrorMessage}}</p>
+        <p>{{ serverErrorMessage}}, Please Try Again!</p>
       </div>
       <form @submit.prevent="handleSubmit" class="space-y-5">
        
