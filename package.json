@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@nuxtjs/toast": "^3.3.1",
     "@tailwindcss/vite": "^4.1.18",
     "nuxt": "^4.2.2",
     "primeicons": "^7.0.0",
