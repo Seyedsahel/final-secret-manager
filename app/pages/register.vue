@@ -2,8 +2,11 @@
     
   import { ref } from 'vue';
   import { useToast } from 'vue-toastification';
+  import { useAuthStore } from '@/stores/auth';
+
 
   const toast = useToast();
+  const auth = useAuthStore();
 
 //   definePageMeta({
 //     middleware: 'auth'
@@ -45,30 +48,18 @@
 
 
   async function register(){
+    loading.value = true;
     serverErrorMessage.value = "";
-    try {
-            loading.value = true;
-            await $fetch('/api/auth/register', {
-              method: 'POST',
-              body: {
-                "username": username.value,
-                "password": password.value
-              }
-            });
-            toast.success('Registration successful! Please log in.');
-            
-            return navigateTo('/login')
-          } catch (error: any) {
-            const message = error?.data?.message; 
-            if (message) {
-              serverErrorMessage.value = message;
-            } else{
-              console.error('Unknown Error', error);
-            }
-          } finally{
-            loading.value = false;
-          } 
+    const success = await auth.register(username.value, password.value);
+    if (success) {
+      toast.success('Registration successful! Please log in.');
+        navigateTo('/login');
+    } else{
+        serverErrorMessage.value = auth.error || '';
+        loading.value = false;
     }
+  }
+    
    const handleSubmit = () => {
     if (validateForm()) {
       register();

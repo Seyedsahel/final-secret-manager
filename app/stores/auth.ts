@@ -27,7 +27,26 @@ export const useAuthStore = defineStore('auth', {
       } finally{
         this.loading = false
       }
+    },
+     async register(username: string, password:string){
+      this.error = null
+      this.loading = true
+      
+      try {
+        await $fetch('/api/auth/register', {
+          method: 'POST',
+          body: { username, password }
+        })
+        return true; 
+    } catch (error: any) {
+      this.error = error?.data?.message || 'Registration failed'
+      return false
+    } finally{
+      this.loading = false
     }
-  }
+
+    }
+    
+  } 
   
 })
