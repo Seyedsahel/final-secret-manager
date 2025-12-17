@@ -7,5 +7,5 @@
   console.log("ligin?",auth.isAuthenticated)
   </script>
 <template>
-    index page
+   
 </template>
