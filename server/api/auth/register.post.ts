@@ -1,7 +1,8 @@
+import { RegisterResponse } from '~/types/api';
 export default defineEventHandler(async(event) => {
     const body = await readBody(event);
     try {
-        const data = await $fetch(
+        const data = await $fetch<RegisterResponse>(
             'https://secret-management-backend.nshub.net/auth/register',
             {
                 method: 'POST',

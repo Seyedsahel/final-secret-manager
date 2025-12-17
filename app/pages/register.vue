@@ -77,7 +77,7 @@
         <div class="inline-flex items-center justify-center w-16 h-16 bg-slate-900 rounded-full mb-4">
           <span class="pi pi-user text-indigo-400 text-3xl"></span>
         </div>
-        <h1 class="text-slate-100 mb-2">Create Account</h1>
+        <h1 class="text-indigo-400 mb-2 text-2xl">Create Account</h1>
         <p class="text-slate-400">Sign up to get started</p>
       </div>
       <div v-if="serverErrorMessage" class="text-red-500 text-lg text-center border border-red-500 rounded p-2.5 m-5">

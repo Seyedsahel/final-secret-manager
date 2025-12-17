@@ -34,16 +34,16 @@
 
   async function login(){
     serverErrorMessage.value = "";
+    console.log(username.value,password.value);
+    
     try {
-            await $fetch('/api/auth/register', {
+            await $fetch('/api/auth/login', {
               method: 'POST',
               body: {
                 "username": username.value,
                 "password": password.value
               }
             });
-            console.log("sucess");
-            
             return navigateTo('/')
           } catch (error: any) {
             const message = error?.data?.message; 
@@ -69,8 +69,7 @@
         <div class="inline-flex items-center justify-center w-16 h-16 bg-slate-900 rounded-full mb-4">
           <span class="pi pi-user text-indigo-400 text-3xl"></span>
         </div>
-        <h1 class="text-slate-100 mb-2">Create Account</h1>
-        <p class="text-slate-400">Sign up to get started</p>
+        <h1 class="text-indigo-400 mb-2 text-2xl">Login to Your Account</h1>
       </div>
       <div v-if="serverErrorMessage" class="text-red-500 text-lg text-center border border-red-500 rounded p-2.5 m-5">
         <p>{{ serverErrorMessage}}</p>
@@ -134,7 +133,7 @@
           type="submit"
           class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-lg transition-colors"
         >
-          Create Account
+          Login
         </button>
       </form>
 
