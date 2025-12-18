@@ -1,35 +1,58 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { reactive, watch } from 'vue'
 
-interface NewRecord {
+interface RecordPayload {
   name: string
   content: string
 }
 
+const props = defineProps<{
+  mode: 'add' | 'edit'
+  initialRecord?: RecordPayload
+}>()
+
 const emit = defineEmits<{
-  submit: [record: NewRecord]
+  submit: [record: RecordPayload]
   close: []
 }>()
 
-const record = reactive<NewRecord>({
+const record = reactive<RecordPayload>({
   name: '',
   content: ''
 })
+
 const recordError = reactive({
   name: '',
   content: ''
 })
 
-const submit = () => {
-    recordError.name = ""
-    recordError.content = ""
-    if (!record.name) {
-        recordError.name = "Name is requaierd!"   
-    } if(!record.content) {
-        recordError.content = "Content is requaierd!"   
-    } else{
-        emit('submit', { ...record })
+// if in edit mode, set inital values
+watch(
+  () => props.initialRecord,
+  (value) => {
+    if (value) {
+      record.name = value.name
+      record.content = value.content
     }
+  },
+  { immediate: true }
+)
+
+const submit = () => {
+  recordError.name = ''
+  recordError.content = ''
+
+  if (!record.name) {
+    recordError.name = 'Name is required'
+  }
+
+  if (!record.content) {
+    recordError.content = 'Content is required'
+  }
+
+  if (recordError.name || recordError.content) return
+
+  emit('submit', { ...record })
 }
 
 const close = () => {
@@ -40,13 +63,12 @@ const close = () => {
 <template>
   <div class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
     <div class="bg-slate-900 border border-slate-800 rounded-lg w-full max-w-md p-6">
-      
+
       <div class="flex items-center justify-between mb-6">
-        <h2 class="text-slate-100">Add New Secret</h2>
-        <button
-          @click="close"
-          class="text-slate-400 hover:text-slate-200"
-        >
+        <h2 class="text-slate-100">
+          {{ props.mode === 'add' ? 'Add New Secret' : 'Edit Secret' }}
+        </h2>
+        <button @click="close" class="text-slate-400 hover:text-slate-200">
           ✕
         </button>
       </div>
@@ -73,17 +95,11 @@ const close = () => {
         </div>
 
         <div class="flex gap-3 pt-2">
-          <button
-            @click="close"
-            class="flex-1 bg-slate-800 text-slate-200 py-3 rounded-lg"
-          >
+          <button @click="close" class="flex-1 bg-slate-800 text-slate-200 py-3 rounded-lg">
             Cancel
           </button>
-          <button
-            @click="submit"
-            class="flex-1 bg-indigo-600 text-white py-3 rounded-lg"
-          >
-            Add Record
+          <button @click="submit" class="flex-1 bg-indigo-600 text-white py-3 rounded-lg">
+            {{ props.mode === 'add' ? 'Add Record' : 'Save Changes' }}
           </button>
         </div>
       </div>

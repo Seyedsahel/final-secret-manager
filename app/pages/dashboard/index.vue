@@ -28,25 +28,57 @@
     )
 
 
-    const showAddModal = ref(false);
- 
-    const handleAddRecord = async (record:{name:string; content: string}) => {
-      const success = await recordStore.addRecord(record.name, record.content)
-      if (success) {
-        toast.success('Login successful!');
-        showAddModal.value = false
-      }
-       
-    };
-    
     const handleSelectRecord = (id: number) => {
         router.push(`/dashboard/${id}`)
     };
 
+    const showRecordModal = ref(false)
+    const modalMode = ref<'add' | 'edit'>('add')
+    const selectedRecord = ref<
+    {   id:number;
+        name: string;
+        content: string}
+     | undefined>(undefined)
+
+
+    const handleAddClick = () => {
+        modalMode.value = 'add'
+        selectedRecord.value = undefined
+        showRecordModal.value = true
+    }
     const handleEditRecord = (id: number) => {
-        console.log('Edit record:', id);
-        // Implement edit functionality
-    };
+        const record = recordStore.records.find(r => r.id === id)
+        if (!record) return
+
+        modalMode.value = 'edit'
+        selectedRecord.value = {
+            id: record.id,
+            name: record.name,
+            content: record.content
+        }
+        showRecordModal.value = true
+    }
+
+    const handleSubmitRecord = async (payload: { name: string; content: string }) => {
+        let success = false
+
+        if (modalMode.value === 'add') {
+            success = await recordStore.addRecord(payload.name, payload.content)
+            toast.success('Secret Added Successfully!');
+        } else if (modalMode.value === 'edit' && selectedRecord.value) {
+            success = await recordStore.updateRecord(
+            selectedRecord.value.id,
+            payload.name,
+            payload.content
+            )
+        }
+
+        if (success) {
+            showRecordModal.value = false
+        }
+    }
+
+
 
     const handleDeleteRecord = (id: number) => {
         console.log('Delet record:', id);
@@ -83,17 +115,20 @@
 
     <!-- Floating Add Button -->
     <button
-      @click="showAddModal = true"
+      @click="showRecordModal = true"
       class="fixed bottom-6 left-6 w-14 h-14 bg-indigo-600 hover:bg-indigo-500 text-white rounded-full shadow-lg flex items-center justify-center transition-colors"
     >
       <span class="pi pi-plus text-xl"></span>
     </button>
 
     <!-- Add Record Modal -->
-    <AddRecordModel
-      v-if="showAddModal"
-      @close="showAddModal=false"
-      @submit="handleAddRecord"
+    <AddRecordModal
+        v-if="showRecordModal"
+        :mode="modalMode"
+        :initial-record="selectedRecord"
+        @submit="handleSubmitRecord"
+        @close="showRecordModal = false"
     />
+
   </div>
 </template>

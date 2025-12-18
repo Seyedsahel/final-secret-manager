@@ -90,7 +90,53 @@ export const useRecordStore = defineStore('record', {
         clearCurrentRecord(){
             this.currentRecord = null
             this.error = null
-        }
+        },
+
+        async updateRecord(recordId: number, name: string, content: string) {
+            this.loading = true
+            this.error = null
+            try {
+                const res = await $fetch<{ data: { id: number; name: string; content: string } }>('/api/record/update', {
+                    method: 'POST',
+                    body: { record_id: recordId, name, content },
+                    credentials: 'include'
+                })
+
+                const index = this.records.findIndex(r => r.id === recordId)
+                if (index !== -1) {
+                    const oldRecord = this.records[index]!
+                    this.records[index] = {
+                        id: oldRecord.id,
+                        user_id: oldRecord.user_id,
+                        name: res.data.name,
+                        content: res.data.content
+                    }
+                }
+
+                if (this.currentRecord && this.currentRecord.id === recordId) {
+                    this.currentRecord = {
+                        id: this.currentRecord.id,
+                        user_id: this.currentRecord.user_id,
+                        name: res.data.name,
+                        content: res.data.content
+                    }
+                }
+
+                return true
+            } catch (error: any) {
+                if (error?.statusCode === 401) {
+                    this.error = 'Unauthorized'
+                } else {
+                    this.error = error?.data?.message || 'Update record failed'
+                }
+                return false
+            } finally {
+                this.loading = false
+            }
+        },
+
+
+
        
     }
 })

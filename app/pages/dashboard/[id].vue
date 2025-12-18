@@ -3,6 +3,8 @@
     import { useRoute, useRouter } from 'vue-router'
     import { useRecordStore } from '@/stores/record'
     import { useAuthStore } from '@/stores/auth'
+    import { ref } from 'vue'
+
 
     const route = useRoute()
     const router = useRouter()
@@ -42,33 +44,64 @@
     })
 
 
-const showContent = ref(false);
-const copied = ref(false);
-const showDeleteModal = ref(false);
+    const showContent = ref(false);
+    const copied = ref(false);
+    const showDeleteModal = ref(false);
 
-const handleCopy = async () => {
-  const content = recordStore.currentRecord?.content
+    const handleCopy = async () => {
+    const content = recordStore.currentRecord?.content
 
-  if (!content) return
+    if (!content) return
 
-  await navigator.clipboard.writeText(content)
+    await navigator.clipboard.writeText(content)
 
-  copied.value = true
-  setTimeout(() => {
-    copied.value = false
-  }, 2000)
-}
+    copied.value = true
+    setTimeout(() => {
+        copied.value = false
+    }, 2000)
+    }
 
-const handleDelete = () => {
-  console.log('Delete secret:');
-  // Handle delete logic here
-  showDeleteModal.value = false;
-};
 
-const handleEdit = () => {
-  console.log('Edit secret:',);
-  // Navigate to edit page or open edit modal
-};
+    const showRecordModal = ref(false)
+    const modalMode = ref<'add' | 'edit'>('add')
+    const selectedRecord = ref<
+    { id: number; name: string; content: string } | undefined
+    >(undefined)
+
+    const handleDelete = () => {
+    console.log('Delete secret:');
+    // Handle delete logic here
+    showDeleteModal.value = false;
+    };
+
+    const handleEdit = () => {
+    if (!recordStore.currentRecord) return
+
+    modalMode.value = 'edit'
+    selectedRecord.value = {
+        id: recordStore.currentRecord.id,
+        name: recordStore.currentRecord.name,
+        content: recordStore.currentRecord.content
+    }
+    showRecordModal.value = true
+    }
+
+    const handleSubmitRecord = async (payload: { name: string; content: string }) => {
+        if (!selectedRecord.value) return
+
+        const success = await recordStore.updateRecord(
+            selectedRecord.value.id,
+            payload.name,
+            payload.content
+        )
+
+        if (success) {
+            showRecordModal.value = false
+        }
+        }
+
+
+
 
 </script>
 <template>
@@ -112,7 +145,7 @@ const handleEdit = () => {
                      {{ recordStore.currentRecord?.content }}
                   </p>
                   <p v-else class="text-slate-500 font-mono text-sm">
-                    {{ '•'.repeat(40) }}
+                    {{ '•'.repeat(10) }}
                   </p>
                 </div>
                 <div class="flex gap-2 shrink-0">
@@ -186,5 +219,14 @@ const handleEdit = () => {
         </div>
       </div>
     </div>
+        <AddRecordModal
+        v-if="showRecordModal"
+        :mode="modalMode"
+        :initial-record="selectedRecord"
+        @submit="handleSubmitRecord"
+        @close="showRecordModal = false"
+    />
   </div>
+ 
+
 </template>
