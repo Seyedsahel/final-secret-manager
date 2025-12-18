@@ -22,7 +22,6 @@ export default defineEventHandler(async(event) => {
 
         return data;
     } catch (error: any) {
-        console.error('Error occurred while logging in:', error);
         throw createError({
             statusCode: error?.statusCode || 400,
             message: error?.data?.message || 'login failed'

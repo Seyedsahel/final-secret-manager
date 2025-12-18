@@ -27,7 +27,7 @@
             router.push('/dashboard')
             return
         }
-        await recordStore.selectRecordNyId(recordId)
+        await recordStore.selectRecordById(recordId)
     })
 
     // error handling

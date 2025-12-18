@@ -16,7 +16,6 @@ export default defineEventHandler(async(event) => {
 
         return data;
     } catch (error: any) {
-        console.error('Error occurred while registering:', error);
         throw createError({
             statusCode: error?.statusCode || 400,
             message: error?.data?.message || 'Registration failed'

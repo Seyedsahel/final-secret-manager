@@ -8,7 +8,6 @@
     definePageMeta({
         middleware: ['auth','un-auth']
     })
-  console.log("ligin?",auth.isAuthenticated)
   </script>
 <template>
    

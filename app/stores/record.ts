@@ -70,7 +70,7 @@ export const useRecordStore = defineStore('record', {
                 this.loading = false
             }
         },
-        async selectRecordNyId(id: number){
+        async selectRecordById(id: number){
             this.loading = true
             this.error = null
             this.currentRecord = null
