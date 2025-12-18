@@ -12,13 +12,13 @@
 
     // because we do not have a token validation from backend:
     const recordStore = useRecordStore()
-    let isAuthForHeader = ref(false)
+    // let isAuthForHeader = ref(false)
     const toast = useToast();
     const auth = useAuthStore();
 
     onMounted(async () => {
       await recordStore.fetchRecords()
-      isAuthForHeader.value = true;
+    //   isAuthForHeader.value = true;
       auth.isAuthenticated = true
     })
 
@@ -26,7 +26,7 @@
       () => recordStore.error,
       (error) => {
         if (error === 'Unauthorized') {
-          isAuthForHeader.value = false
+        //   isAuthForHeader.value = false
           auth.isAuthenticated = false
         }
       }
