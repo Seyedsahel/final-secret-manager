@@ -2,6 +2,28 @@
     import logo from '@/assets/img/logo.png';
     import { useToast } from 'vue-toastification';
     import { useAuthStore } from '@/stores/auth';
+    import { useRecordStore } from '@/stores/record';
+    import { ref, onMounted , watch } from 'vue';
+
+    // because wa do not have a token validat from backend:
+    const recordStore = useRecordStore()
+    let isAuthForHeader = ref(false)
+
+    onMounted(async () => {
+      await recordStore.fetchRecords()
+      isAuthForHeader.value = true;
+    })
+
+    watch(
+      () => recordStore.error,
+      (error) => {
+        if (error === 'Unauthorized') {
+          isAuthForHeader.value = false
+          
+        }
+      }
+    )
+
 
     const toast = useToast();
     const auth = useAuthStore();
@@ -25,12 +47,12 @@
                 <NuxtLink to="/" class="text-white text-lg font-semibold">Secret Management</NuxtLink>
             </div>
             <div>
-                <div v-if="!auth.isAuthenticated" class="bg-green-500 text-white px-4 py-2 rounded cursor-pointer">
+                <div v-if="!isAuthForHeader" class="bg-green-500 text-white px-4 py-2 rounded cursor-pointer">
                     <NuxtLink to="/login" class="font-bold" >
                    <i class="pi pi-sign-in text-white mr-2.5 "></i> Login
                 </NuxtLink>
                 </div>
-                 <div v-if="auth.isAuthenticated"  @click="logout()" class="bg-green-500 text-white px-4 py-2 rounded cursor-pointer font-bold">
+                 <div v-if="isAuthForHeader"  @click="logout()" class="bg-green-500 text-white px-4 py-2 rounded cursor-pointer font-bold">
                    <i class="pi pi-sign-out text-white mr-2.5 "></i> Logout
                 </div>
                
