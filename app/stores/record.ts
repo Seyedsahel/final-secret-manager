@@ -1,3 +1,9 @@
+// Record store (Pinia)
+// - Responsible for fetching and mutating the user's records (secrets).
+// - Exposes `records`, `currentRecord`, `loading` and `error` and
+//   actions that call server-side proxy endpoints. Server-auth is
+//   managed via an HTTP-only cookie and requests include the token
+//   via server proxies (see `server/api/record/*`).
 import { defineStore } from 'pinia'
 import type { Record, RecordListResponse } from '@/types/api'
 

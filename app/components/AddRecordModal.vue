@@ -1,4 +1,8 @@
 <script setup lang="ts">
+// AddRecordModal component
+// - Small modal UI used to create or edit a secret/record.
+// - Validates presence of `name` and `content` before emitting `submit`.
+// - Purely presentational and emits events; does not perform network calls.
 import { reactive, watch } from 'vue'
 
 interface RecordPayload {

@@ -1,5 +1,10 @@
 <script setup lang="ts">
-    import { onMounted, watch } from 'vue'
+  // Record detail page
+  // - Displays a single secret's content and metadata.
+  // - Uses the `record` store to load the current record by id and
+  //   handles copy/edit/delete UI actions. Error handling redirects
+  //   the user when the record is missing or unauthorized.
+  import { onMounted, watch } from 'vue'
     import { useRoute, useRouter } from 'vue-router'
     import { useRecordStore } from '@/stores/record'
     import { useAuthStore } from '@/stores/auth'

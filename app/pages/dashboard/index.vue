@@ -1,5 +1,10 @@
 <script setup lang="ts">
-    import { ref , onMounted , watch } from 'vue';
+  // Dashboard index
+  // - Shows the list of records (secrets) and provides actions to
+  //   add, edit or delete records. This page delegates network
+  //   operations to the `record` store and reacts to its loading/error
+  //   state. UI logic like opening modals is handled here.
+  import { ref , onMounted , watch } from 'vue';
     import { useRouter } from 'vue-router';
     import { useRecordStore } from '@/stores/record';
     import { useAuthStore } from '@/stores/auth';

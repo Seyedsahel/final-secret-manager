@@ -1,3 +1,7 @@
+// Server login proxy
+// - Forwards POST /login to the upstream API and stores the returned
+//   token in an HTTP-only cookie so the browser cannot access it via JS.
+// - Keep token handling on the server for better security (HTTP-only cookie).
 import { LoginResponse} from '~/types/api';
 export default defineEventHandler(async(event) => {
     const { public: { apiBase } } = useRuntimeConfig()

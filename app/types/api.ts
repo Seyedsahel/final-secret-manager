@@ -1,5 +1,8 @@
+// API response types
+// - Central place for types returned by the upstream authentication API.
+// - Keep these small and update when the upstream changes shape.
 export interface LoginResponse {
-    data: string
+  data: string
 }
 
 export interface RegisterResponse {

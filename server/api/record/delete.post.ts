@@ -1,3 +1,7 @@
+// Server proxy: delete record
+// - Checks the HTTP-only `token` cookie, forwards the delete request
+//   to the upstream API with the token in the Authorization header,
+//   and returns the upstream response or an error mapping.
 export default defineEventHandler(async (event) => {
     const {public : { apiBase } } = useRuntimeConfig()
     const body = await readBody(event)

@@ -1,5 +1,9 @@
 <script setup lang="ts">
-    
+  // Register page
+  // - Gathers new account information and calls the server register
+  //   endpoint via the auth store. This page does not automatically
+  //   sign in the user after registration; it redirects to login.
+  
   import { ref } from 'vue';
   import { useToast } from 'vue-toastification';
   import { useAuthStore } from '@/stores/auth';
@@ -176,7 +180,7 @@
           class="flex items-center justify-center w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-lg transition-colors"
           :disabled="loading"
           >
-            <i v-if="loading" class="pi pi-spin pi-spinner mr-2 text-2xl "></i>
+            <i v-if="loading" class="pi pi-spin pi-spinner text-2xl"></i>
               Create Account
         </button>
       </form>

@@ -1,4 +1,9 @@
 <script setup lang="ts">
+// RecordItem component
+// - Displays a single record in the list and emits simple events
+//   (`select`, `edit`, `delete`) so parent components can handle
+//   navigation or API interactions. Keeps presentation and behavior
+//   decoupled from network logic.
 interface Record {
   id: number
   name: string

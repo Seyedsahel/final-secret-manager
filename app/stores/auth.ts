@@ -1,3 +1,10 @@
+// Pinia auth store
+// - Holds a minimal authentication state used across the app.
+// - Keeps `isAuthenticated`, `loading`, and `error` flags and exposes
+//   actions for login/register/logout. The store performs the API
+//   calls here; it relies on server-side session cookies for persistence.
+// - This file intentionally keeps logic small — move network logic to a
+//   composable/service if you prefer separation of concerns.
 import { defineStore } from 'pinia'
 
 

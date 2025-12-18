@@ -1,3 +1,8 @@
+// Server proxy: create record
+// - Verifies presence of the HTTP-only `token` cookie and forwards the
+//   create request to the upstream API with an Authorization header.
+// - Returns upstream response or a mapped error. This keeps token
+//   usage on the server and avoids exposing tokens to the client.
 export default defineEventHandler(async (event) => {
     const {public : { apiBase } } = useRuntimeConfig()
     const body = await readBody(event)

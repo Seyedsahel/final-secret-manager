@@ -1,3 +1,7 @@
+// Server proxy: list records
+// - Reads the HTTP-only `token` cookie and forwards a GET request to
+//   the upstream `/record/list` endpoint with a Bearer header. Returns
+//   the upstream response or maps errors to HTTP responses.
 export default defineEventHandler(async(event) => {
     const token = getCookie(event, 'token')
 

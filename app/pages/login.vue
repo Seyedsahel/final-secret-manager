@@ -1,5 +1,10 @@
 <script setup lang="ts">
-    
+  // Login page
+  // - Collects username/password and calls the auth store to perform login.
+  // - Server sets an HTTP-only cookie on successful login; the client
+  //   reads session state via the auth store. This file only handles
+  //   UI interactions and displays server errors/toasts.
+  
   import { ref } from 'vue';
   import { useToast } from 'vue-toastification';
   import { useAuthStore } from '@/stores/auth';
@@ -131,8 +136,7 @@
           class="flex items-center justify-center w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-lg transition-colors"
             :disabled="loading"
         >
-            <i v-if="loading" class="pi pi-spin pi-spinner mr-2 text-2xl"></i>
-            
+        <i v-if="loading" class="pi pi-spin pi-spinner text-2xl"></i>
               Login
         </button>
       </form>

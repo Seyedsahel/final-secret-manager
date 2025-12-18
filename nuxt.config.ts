@@ -1,5 +1,9 @@
 import tailwindcss from "@tailwindcss/vite";
-// https://nuxt.com/docs/api/configuration/nuxt-config
+// Nuxt configuration
+// - Registers Pinia as a module for state management.
+// - Sets runtime public config (apiBase) used by server proxies.
+// - Includes Tailwind/Vite plugin configuration.
+// See `nuxt.com/docs` for details.
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },

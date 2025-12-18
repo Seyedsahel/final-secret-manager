@@ -1,3 +1,6 @@
+// Server register proxy
+// - Forwards registration data to the upstream API. This endpoint
+//   returns the upstream response but does not create a client session.
 import { RegisterResponse } from '~/types/api';
 export default defineEventHandler(async(event) => {
     const { public: { apiBase } } = useRuntimeConfig()
