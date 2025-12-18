@@ -88,14 +88,27 @@
         }
     }
 
+    const showDeleteModal = ref(false)
+    const handleAskDeleteRecord = (id: number) => {
+      const record = recordStore.records.find(r => r.id === id)
+      if (!record) return
+
+      recordStore.currentRecord = record
+      showDeleteModal.value = true
+    }
 
 
-    const handleDeleteRecord = async (id: number) => {
-        const success = await recordStore.deleteRecord(id)
-        if (success) {
-          toast.warning('Record deleted successfully')
-        }
-    };
+    const handleDeleteRecord = async () => {
+      const record = recordStore.currentRecord
+      if (!record) return
+
+      const success = await recordStore.deleteRecord(record.id)
+      if (success) {
+        toast.warning('Record deleted successfully')
+        showDeleteModal.value = false
+      }
+    }
+
 </script>
 <template>
   <div class="min-h-screen bg-slate-950">
@@ -141,7 +154,7 @@
               :record="record"
               @select="handleSelectRecord"
               @edit="handleEditRecord"
-              @delete="handleDeleteRecord"
+              @delete="handleAskDeleteRecord"
             />
           </div>
         </div>   
@@ -158,6 +171,34 @@
       <!-- Animated glow ring -->
       <span class="absolute inset-0 rounded-full bg-indigo-500 blur-md opacity-40 group-hover:opacity-60 transition-opacity"></span>
     </button>
+
+
+    <!-- Delete Confirmation Modal -->
+    <div v-if="showDeleteModal" class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+      <div class="bg-slate-900 border border-slate-800 rounded-lg w-full max-w-md p-6">
+        <div class="mb-6">
+          <h2 class="text-slate-100 mb-2">Delete Secret</h2>
+          <p class="text-slate-400 text-sm">
+            Are you sure you want to delete "{{ recordStore.currentRecord?.name }}"? This action cannot be undone.
+          </p>
+        </div>
+
+        <div class="flex gap-3">
+          <button
+            @click="showDeleteModal = false"
+            class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-200 py-3 rounded-lg transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            @click="handleDeleteRecord"
+            class="flex-1 bg-red-600 hover:bg-red-500 text-white py-3 rounded-lg transition-colors"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
 
     <!-- Add/Edit Record Modal -->
     <AddRecordModal

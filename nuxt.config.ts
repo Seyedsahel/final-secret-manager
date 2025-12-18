@@ -6,7 +6,7 @@ import tailwindcss from "@tailwindcss/vite";
 // See `nuxt.com/docs` for details.
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   runtimeConfig:{
     public:{
       apiBase: 'https://secret-management-backend.nshub.net'
