@@ -44,7 +44,7 @@
         <div class="container mx-auto flex justify-between items-center mb-5">
             <div class="flex items-center">
                 <img :src="logo" alt="Logo" class="h-8 mr-2" />
-                <NuxtLink to="/" class="text-white text-lg font-semibold">Secret Management</NuxtLink>
+                <NuxtLink to="/dashboard" class="text-white text-lg font-semibold">Secret Management</NuxtLink>
             </div>
             <div>
                 <div v-if="!isAuthForHeader" class="bg-green-500 text-white px-4 py-2 rounded cursor-pointer">

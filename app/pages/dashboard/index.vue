@@ -6,7 +6,7 @@
     import { useToast } from 'vue-toastification';
 
     const toast = useToast();
-    const showDeleteModal = ref(false);
+    
 
     // fetch data(secrets list)
     const recordStore = useRecordStore()

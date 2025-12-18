@@ -176,7 +176,7 @@
           class="flex items-center justify-center w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-lg transition-colors"
           :disabled="loading"
           >
-            <LoadingSpinner v-if="loading" class="mr-2"/>
+            <i v-if="loading" class="pi pi-spin pi-spinner mr-2 text-2xl "></i>
               Create Account
         </button>
       </form>
