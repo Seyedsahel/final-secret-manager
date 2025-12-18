@@ -38,6 +38,10 @@
       }
        
     };
+    
+    const handleSelectRecord = (id: number) => {
+        router.push(`/dashboard/${id}`)
+    };
 
     const handleEditRecord = (id: number) => {
         console.log('Edit record:', id);
@@ -51,8 +55,7 @@
 </script>
 
 <template>
-  <div class="min-h-screen bg-slate-950">
-
+  <div>
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-10 py-6">
       <!-- Records List -->
@@ -69,6 +72,7 @@
             v-for="record in recordStore.records" 
             :key="record.id" 
             :record="record"
+            @select="handleSelectRecord"
             @edit="handleEditRecord"
             @delete="handleDeleteRecord"
           />
@@ -82,10 +86,7 @@
       @click="showAddModal = true"
       class="fixed bottom-6 left-6 w-14 h-14 bg-indigo-600 hover:bg-indigo-500 text-white rounded-full shadow-lg flex items-center justify-center transition-colors"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="12" y1="5" x2="12" y2="19"/>
-        <line x1="5" y1="12" x2="19" y2="12"/>
-      </svg>
+      <span class="pi pi-plus text-xl"></span>
     </button>
 
     <!-- Add Record Modal -->

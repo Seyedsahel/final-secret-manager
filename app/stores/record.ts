@@ -15,6 +15,7 @@ export interface RecordCreateResponse {
 export const useRecordStore = defineStore('record', {
     state: () => ({
     records: [] as Record[],
+    currentRecord: null as RecordItem | null,
     loading: false,
     error: null as string | null
     }),
@@ -62,6 +63,33 @@ export const useRecordStore = defineStore('record', {
             } finally{
                 this.loading = false
             }
+        },
+        async selectRecordNyId(id: number){
+            this.loading = true
+            this.error = null
+            this.currentRecord = null
+            try {
+                if(this.records.length === 0){
+                    await this.fetchRecords()
+                }
+                const record = this.records.find(r => r.id === id)
+
+                if(!record){
+                    this.error = 'Not Found'
+                    return
+                }
+                this.currentRecord = record
+                
+            } catch {
+                this.error = 'Failed to load record'
+            } finally{
+                this.loading = false
+            }
+        },
+        // for when exiting detail page
+        clearCurrentRecord(){
+            this.currentRecord = null
+            this.error = null
         }
        
     }
