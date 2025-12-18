@@ -75,7 +75,7 @@
                         to="/login"
                         class="inline-flex items-center md:gap-2 bg-linear-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white md:px-5 px-3 py-2.5 rounded-lg font-medium shadow-lg shadow-indigo-500/30 transition-all duration-300 hover:shadow-indigo-500/50 hover:scale-105"
                     >
-                        <i class="pi pi-sign-in"></i>
+                        <i class="pi pi-sign-out"></i>
                         <span class="hidden sm:inline">Logout</span>
                     </NuxtLink>
                
