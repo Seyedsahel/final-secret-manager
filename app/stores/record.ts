@@ -135,6 +135,33 @@ export const useRecordStore = defineStore('record', {
             }
         },
 
+        async deleteRecord(recordId: number){
+            this.loading = true
+            this.error = null
+
+            try {
+                await $fetch<RecordCreateResponse>('/api/record/delete',{
+                    method: 'POST',
+                    body: {record_id: recordId},
+                    credentials : 'include'
+                })
+                this.records = this.records.filter(r => r.id !== recordId)
+                if (this.currentRecord?.id === recordId) {
+                    this.currentRecord = null
+                }
+                return true
+            } catch (error: any) {
+                if (error?.statusCode === 401) {
+                    this.error = "Unauthorized"
+                } else{
+                    this.error = error?.data?.message || 'delete record failed'
+                }
+                return false
+            } finally{
+                this.loading = false
+            }
+        },
+
 
 
        

@@ -6,6 +6,7 @@
     import { useToast } from 'vue-toastification';
 
     const toast = useToast();
+    const showDeleteModal = ref(false);
 
     // fetch data(secrets list)
     const recordStore = useRecordStore()
@@ -80,9 +81,11 @@
 
 
 
-    const handleDeleteRecord = (id: number) => {
-        console.log('Delet record:', id);
-        // Implement edit functionality
+    const handleDeleteRecord = async (id: number) => {
+        const success = await recordStore.deleteRecord(id)
+        if (success) {
+          toast.warning('Record deleted successfully')
+        }
     };
 </script>
 
@@ -129,6 +132,7 @@
         @submit="handleSubmitRecord"
         @close="showRecordModal = false"
     />
+   
 
   </div>
 </template>

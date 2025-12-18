@@ -71,10 +71,14 @@
     { id: number; name: string; content: string } | undefined
     >(undefined)
 
-    const handleDelete = () => {
-    console.log('Delete secret:');
-    // Handle delete logic here
-    showDeleteModal.value = false;
+    const handleDelete = async() => {
+      if(!recordStore.currentRecord)return
+      const success = await recordStore.deleteRecord(recordStore.currentRecord.id)
+      if (success) {
+        toast.warning('Record deleted successfully')
+        showDeleteModal.value = false
+        router.push('/dashboard')
+      }
     };
 
     const handleEdit = () => {
