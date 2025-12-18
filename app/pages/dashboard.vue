@@ -1,35 +1,28 @@
-
 <script setup lang="ts">
-    import { ref } from 'vue';
+    import { ref , onMounted , watch } from 'vue';
+    import { useRouter } from 'vue-router';
+    import { useRecordStore } from '@/stores/record';
+    import { useAuthStore } from '@/stores/auth';
 
-        interface Record {
-            id: number;
-            name: string;
-            content: string;
-            }
+    const recordStore = useRecordStore()
+    const authStore = useAuthStore()
+    const router = useRouter()
 
-    const records = ref<Record[]>([
-        {
-        id: 1,
-        name: 'Website Redesign',
-        content: 'Complete redesign of the company website with new branding',
-        },
-        {
-        id: 2,
-        name: 'Mobile App Development',
-        content: 'Build iOS and Android applications for customer portal',  
-        },
-        {
-        id: 3,
-        name: 'Database Migration',
-        content: 'Migrate from MySQL to PostgreSQL for better performance',
-        },
-        {
-        id: 4,
-        name: 'API Integration',
-        content: 'Integrate third-party payment gateway API',
+    onMounted(async () => {
+      await recordStore.fetchRecords()
+    })
+
+    watch(
+      () => recordStore.error,
+      (error) => {
+        if (error === 'Unauthorized') {
+          authStore.isAuthenticated = false
+          router.push('/login')
+          
         }
-    ]);
+      }
+    )
+
 
     const showAddModal = ref(false);
     const newRecord = ref({
@@ -38,16 +31,16 @@
     });
 
     const handleAddRecord = () => {
-        if (newRecord.value.name && newRecord.value.content) {
-        const record: Record = {
-            id: Date.now(),
-            name: newRecord.value.name,
-            content: newRecord.value.content,
-        };
-        records.value = [record, ...records.value];
-        newRecord.value = { name: '', content: '' };
-        showAddModal.value = false;
-        }
+        // if (newRecord.value.name && newRecord.value.content) {
+        // const record: Record = {
+        //     id: Date.now(),
+        //     name: newRecord.value.name,
+        //     content: newRecord.value.content,
+        // };
+        // records.value = [record, ...records.value];
+        // newRecord.value = { name: '', content: '' };
+        // showAddModal.value = false;
+        // }
     };
 
     const handleEditRecord = (id: number) => {
@@ -68,17 +61,23 @@
     <main class="max-w-7xl mx-auto px-10 py-6">
       <!-- Records List -->
       <div class="space-y-3">
-        <div v-if="records.length === 0" class="bg-slate-900 border border-slate-800 rounded-lg p-8 text-center">
+        <div v-if="recordStore.loading" class="bg-slate-900 border border-slate-800 rounded-lg p-8 text-center">
+          <p class="text-slate-400">Loading Secrets...</p>
+        </div>
+        <div v-else>
+          <div v-if="recordStore.records.length === 0" class="bg-slate-900 border border-slate-800 rounded-lg p-8 text-center">
           <p class="text-slate-400">No records found</p>
         </div>
         <RecordItem 
           v-else
-          v-for="record in records" 
+          v-for="record in recordStore.records" 
           :key="record.id" 
           :record="record"
           @edit="handleEditRecord"
           @delete="handleDeleteRecord"
         />
+        </div>
+        
       </div>
     </main>
 
