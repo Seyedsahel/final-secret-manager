@@ -68,9 +68,20 @@
   <div class="flex items-center justify-center p-4">
     <div class="w-full max-w-md">
       <div class="text-center mb-8">
-        <div class="inline-flex items-center justify-center w-16 h-16 bg-slate-900 rounded-full mb-4">
-          <span class="pi pi-user text-indigo-400 text-3xl"></span>
+        <div class="relative inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 group">
+          <!-- Glow layer -->
+          <span
+            class="absolute inset-0 rounded-full bg-indigo-500 blur-md opacity-40 group-hover:opacity-60 transition-opacity"
+          ></span>
+
+          <!-- Main circle -->
+          <div
+            class="relative w-16 h-16 bg-slate-900 rounded-full flex items-center justify-center shadow-lg shadow-indigo-500/40"
+          >
+            <span class="pi pi-user text-indigo-400 text-3xl"></span>
+          </div>
         </div>
+
         <h1 class="text-indigo-400 mb-2 text-2xl">Login to Your Account</h1>
       </div>
       <div v-if="serverErrorMessage" class="text-red-500 text-lg text-center border border-red-500 rounded p-2.5 m-5">
