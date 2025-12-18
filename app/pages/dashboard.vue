@@ -3,6 +3,9 @@
     import { useRouter } from 'vue-router';
     import { useRecordStore } from '@/stores/record';
     import { useAuthStore } from '@/stores/auth';
+    import { useToast } from 'vue-toastification';
+
+    const toast = useToast();
 
     // fetch data(secrets list)
     const recordStore = useRecordStore()
@@ -27,11 +30,13 @@
 
     const showAddModal = ref(false);
  
-    const handleAddRecord = () => {
-       console.log('add record');
-       showAddModal.value = false
-        // Implement add record functionality
-        
+    const handleAddRecord = async (record:{name:string; content: string}) => {
+      const success = await recordStore.addRecord(record.name, record.content)
+      if (success) {
+        toast.success('Login successful!');
+        showAddModal.value = false
+      }
+       
     };
 
     const handleEditRecord = (id: number) => {
@@ -51,7 +56,7 @@
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-10 py-6">
       <!-- Records List -->
-      <div class="space-y-3">
+      <div>
         <div v-if="recordStore.loading" class="bg-slate-900 border border-slate-800 rounded-lg p-8 text-center">
           <p class="text-slate-400">Loading Secrets...</p>
         </div>
@@ -59,16 +64,16 @@
           <div v-if="recordStore.records.length === 0" class="bg-slate-900 border border-slate-800 rounded-lg p-8 text-center">
           <p class="text-slate-400">No records found</p>
         </div>
-        <RecordItem 
-          v-else
-          v-for="record in recordStore.records" 
-          :key="record.id" 
-          :record="record"
-          @edit="handleEditRecord"
-          @delete="handleDeleteRecord"
-        />
+        <div v-else class="space-y-3">
+          <RecordItem 
+            v-for="record in recordStore.records" 
+            :key="record.id" 
+            :record="record"
+            @edit="handleEditRecord"
+            @delete="handleDeleteRecord"
+          />
         </div>
-        
+        </div>   
       </div>
     </main>
 
