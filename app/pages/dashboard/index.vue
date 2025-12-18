@@ -64,7 +64,6 @@
 
         if (modalMode.value === 'add') {
             success = await recordStore.addRecord(payload.name, payload.content)
-            toast.success('Secret Added Successfully!');
         } else if (modalMode.value === 'edit' && selectedRecord.value) {
             success = await recordStore.updateRecord(
             selectedRecord.value.id,
@@ -74,6 +73,7 @@
         }
 
         if (success) {
+            toast.success('Successfull!');
             showRecordModal.value = false
         }
     }

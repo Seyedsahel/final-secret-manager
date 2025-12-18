@@ -4,6 +4,9 @@
     import { useRecordStore } from '@/stores/record'
     import { useAuthStore } from '@/stores/auth'
     import { ref } from 'vue'
+    import { useToast } from 'vue-toastification';
+
+    const toast = useToast();
 
 
     const route = useRoute()
@@ -96,9 +99,10 @@
         )
 
         if (success) {
+            toast.success('Successfull!');
             showRecordModal.value = false
         }
-        }
+    }
 
 
 
